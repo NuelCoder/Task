@@ -161,13 +161,13 @@ public class UserServiceImpl implements UserService{
     public void processKafkaUserAction(UserKafkaMessage message) {
         switch (message.getActionType()) {
             case CREATED:
-                logger.info("👤 Kafka Event - User Created: {}", message.getUserName());
+                logger.info("👤 Kafka Event - User Created: {}", message.toString());
                 break;
             case UPDATED:
-                logger.info("✏️ Kafka Event - User Updated: {}", message.getUserName());
+                logger.info("✏️ Kafka Event - User Updated: {}", message.toString());
                 break;
             case DELETED:
-                logger.info("❌ Kafka Event - User Deleted: {}", message.getUserName());
+                logger.info("❌ Kafka Event - User Deleted: {}", message.toString());
                 break;
             default:
                 logger.warn("⚠️ Unknown Kafka Action Type: {}", message.getActionType());
