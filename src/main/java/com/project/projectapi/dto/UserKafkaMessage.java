@@ -19,7 +19,17 @@ public class UserKafkaMessage {
         this.phoneNumber = phoneNumber;
         this.actionType = actionType;
     }
-
+    @Override
+    public String toString() {
+        return "UserKafkaMessage{" +
+                "Id='" + Id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", actionType='" + actionType + '\'' +
+                '}';
+    }
+    
     public Long getId(){
         return Id;
     }
