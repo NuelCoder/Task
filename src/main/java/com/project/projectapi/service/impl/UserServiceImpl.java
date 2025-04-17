@@ -24,8 +24,10 @@ import com.project.projectapi.service.UserService;
 @Service
 public class UserServiceImpl implements UserService{
     
-     private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final KafkaProducerService kafkaProducerService;
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
+
 
     public UserServiceImpl(UserRepository userRepository, KafkaProducerService kafkaProducerService) {
         this.userRepository = userRepository;
@@ -154,4 +156,23 @@ public class UserServiceImpl implements UserService{
         Pageable pageable = PageRequest.of(page, size);
     return userRepository.findByEmailContainingIgnoreCase(email, pageable);
     }
+
+    @Override
+    public void processKafkaUserAction(UserKafkaMessage message) {
+        switch (message.getActionType()) {
+            case CREATED:
+                logger.info("👤 Kafka Event - User Created: {}", message.getUserName());
+                break;
+            case UPDATED:
+                logger.info("✏️ Kafka Event - User Updated: {}", message.getUserName());
+                break;
+            case DELETED:
+                logger.info("❌ Kafka Event - User Deleted: {}", message.getUserName());
+                break;
+            default:
+                logger.warn("⚠️ Unknown Kafka Action Type: {}", message.getActionType());
+        
+    }
+
+}
 }

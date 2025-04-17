@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.projectapi.dto.UserKafkaMessage;
 import com.project.projectapi.entities.User;
+import com.project.projectapi.enums.ActionType;
+import com.project.projectapi.kafka.KafkaProducerService;
 import com.project.projectapi.service.UserService;
 
 import jakarta.validation.Valid;
@@ -24,17 +27,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
-
-
-
-
 @RestController
 @RequestMapping("/api/users/")
 public class UserController {
+
+    private final KafkaProducerService kafkaProducerService;
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, KafkaProducerService kafkaProducerService) {
         this.userService = userService;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     @PostMapping("/create")
@@ -101,4 +103,10 @@ public class UserController {
         User updatedUser = userService.updateUser(email, user);
         return ResponseEntity.ok(updatedUser);
     }
+
+    @GetMapping("/kafka-test")
+    public ResponseEntity<String> testKafka() {
+    kafkaProducerService.sendMessage(new UserKafkaMessage(1L, "testuser", "test@example.com", "08012345678", ActionType.CREATED));
+    return ResponseEntity.ok("Test Kafka message sent");
+}
 }

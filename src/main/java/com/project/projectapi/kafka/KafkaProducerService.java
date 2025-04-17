@@ -15,6 +15,6 @@ public class KafkaProducerService {
     }
 
     public void sendMessage(UserKafkaMessage message) {
-        kafkaTemplate.send("user-events-topic", message); 
+        kafkaTemplate.send("user-topic", message); 
     }
 }

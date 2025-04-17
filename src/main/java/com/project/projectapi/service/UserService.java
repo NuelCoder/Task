@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
+import com.project.projectapi.dto.UserKafkaMessage;
 import com.project.projectapi.entities.User;
 
 public interface UserService {
@@ -15,4 +16,6 @@ public interface UserService {
     Optional<User> getUserbyEmail(String email);
     List<User> getAllUsers();
     Page<User> getUsers(String email, int page, int size);
+    void processKafkaUserAction(UserKafkaMessage message);
+
 }
